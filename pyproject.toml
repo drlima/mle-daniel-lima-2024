@@ -1,0 +1,55 @@
+[tool.black]
+line-length = 120
+target-version = ['py311']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+)/
+'''
+
+[tool.isort]
+py_version = 311
+profile = 'black'
+
+
+[tool.pytest.ini_options]
+junit_family = "xunit1"
+addopts = [
+    "--junitxml=build/report.xml",
+    "--verbose",
+    "--capture=sys",
+    "--cov=api",
+    "--cov-report=xml",
+    "--cov-report=term",
+]
+testpaths = "api/tests/"
+
+[tool.coverage.run]
+source = ["."]
+omit = [
+    "**/test*.py",
+    "**/tests/",
+    "**/tests/**",
+    "**/__init__.py",
+    ".venv/**",
+]
+
+[tool.mypy]
+follow_imports = 'skip'
+ignore_missing_imports = 'True'
+pretty = 'True'
+show_error_codes = 'True'
+show_error_context = 'True'
+warn_redundant_casts = 'True'
+exclude = ['.venv/*', 'tests']
+
+[tool.bandit]
+exclude_dirs = [".venv", "api/tests"]
