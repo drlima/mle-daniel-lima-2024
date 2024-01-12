@@ -1,0 +1,15 @@
+-r requirements.txt
+-c requirements.txt
+
+jupyter~=1.0.0
+autoflake~=2.2.1                       # Removes unused imports and unused variables
+bandit~=1.7.5                          # A tool for finding common security issues in Python code
+black[jupyter]~=23.12.1                # The uncompromising code formatter
+flake8~=6.1.0                          # A command-line utility for enforcing style consistency across Python projects
+isort~=5.13.2                          # A Python utility/library to sort Python imports
+mypy~=1.8.0                            # Optional static typing for Python
+pre-commit~=3.3.3                      # A framework for managing and maintaining multi-language pre-commit hooks
+pytest~=7.3.1                          # Simple and powerful testing framework for Python
+    pytest-cov~=4.0.0                  # Pytest plugin for measuring coverage
+    pytest-mock~=3.12.0                # Thin-wrapper around the mock package for easier use with pytest
+toml~=0.10.2                           # Python Library for Tom's Obvious, Minimal Language
