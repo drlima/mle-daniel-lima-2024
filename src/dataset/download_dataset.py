@@ -2,7 +2,8 @@ import logging
 from pathlib import Path
 
 import pandas as pd
-from strenum import StrEnum
+
+from .models import Predictors, TargetColumn
 
 logger = logging.getLogger(__name__)
 
@@ -11,84 +12,54 @@ class DataSchemaError(Exception):
     ...
 
 
-class Predictors(StrEnum):
-    TYPE = "type"
-    SECTOR = "sector"
-    NET_USABLE_AREA = "net_usable_area"
-    NET_AREA = "net_area"
-    N_ROOMS = "n_rooms"
-    N_BATHROOM = "n_bathroom"
-    LATITUDE = "latitude"
-    LONGITUDE = "longitude"
-
-
-class TargetColumn(StrEnum):
-    PRICE = "price"
-
-
 class CSVDataSet:
-    def load_data(self, path: Path) -> pd.DataFrame | None:
+    def load_data(self, file_name: str) -> pd.DataFrame:
+        path = Path(__file__).parent.parent.parent / "data" / file_name
         try:
             data = pd.read_csv(path)
-            return data
         except FileNotFoundError:
-            logger.error(f"File {path} not found.")
+            logger.exception(f"File {path} not found.")
         except pd.errors.EmptyDataError:
-            logger.error(f"No data in file {path}")
+            logger.exception(f"No data in file {path}")
         except pd.errors.ParserError:
-            logger.error(f"Parser error in {path}")
+            logger.exception(f"Parser error in {path}")
         except Exception as e:
-            logger.error(e)
-        return None
+            logger.exception(e)
+        return data
 
 
 class DataSet:
-    predictors = Predictors
-    target = TargetColumn
-    data_uri: Path
-    con = CSVDataSet()
-    _train_data: pd.DataFrame | None
-    _test_data: pd.DataFrame | None
+    predictors = [str(p) for p in Predictors]
+    target = [str(t) for t in TargetColumn]
+    db_connector = CSVDataSet()
+    _train_data: pd.DataFrame
+    _test_data: pd.DataFrame
 
-    def __init__(self, data_uri: Path) -> None:
-        self.data_uri = data_uri
+    def __init__(self):
+        self._load_train()
+        self._load_test()
 
     @staticmethod
-    def _columns_in_df(columns: Predictors | TargetColumn, data_frame: pd.DataFrame):
-        if not all([col in data_frame.columns for col in columns]):
-            raise DataSchemaError()
+    def _all_columns_in_df(columns: list[str], data_frame: pd.DataFrame) -> bool:
+        return all([col in data_frame.columns for col in columns])
 
-    def _data_schema_validator(self, data: pd.DataFrame | None):
-        if data is not None:
-            self._columns_in_df(self.predictors, data)  # type: ignore[arg-type]
-            self._columns_in_df(self.target, data)  # type: ignore[arg-type]
+    def _valid_schema(self, data: pd.DataFrame | None) -> bool:
+        return self._all_columns_in_df(self.predictors, data) and self._all_columns_in_df(self.target, data)
 
-    def load_data(self):
-        """
-        Loads the train and test data into pandas DataFrames
-        """
-        self._train_data = self.con.load_data(self.data_uri / "train.csv")
-        try:
-            self._data_schema_validator(self._train_data)
-        except DataSchemaError:
-            logger.error("Missing columns in training dataset")
-            self._train_data = None
+    def _load_train(self):
+        self._train_data = self.db_connector.load_data("train.csv")
+        if self._train_data is not None and not self._valid_schema(self._train_data):
+            raise DataSchemaError("Missing columns in training dataset")
 
-        self._test_data = self.con.load_data(self.data_uri / "test.csv")
-        try:
-            self._data_schema_validator(self._test_data)
-        except DataSchemaError:
-            logger.error("Missing columns in training dataset")
-            self._test_data = None
+    def _load_test(self):
+        self._test_data = self.db_connector.load_data("test.csv")
+        if self._test_data is not None and not self._valid_schema(self._test_data):
+            raise DataSchemaError("Missing columns in test dataset")
 
     @property
-    def train(self) -> pd.DataFrame:
-        if self._train_data is None:
-            return pd.DataFrame()
-        return self._train_data.copy()
+    def train(self) -> tuple[pd.DataFrame, pd.DataFrame]:
+        return self._train_data[self.predictors], self._train_data[self.target]
 
     @property
-    def test(self) -> pd.DataFrame:
-        if self._test_data is None:
-            return pd.DataFrame()
-        return self._test_data.copy()
+    def test(self) -> tuple[pd.DataFrame, pd.DataFrame]:
+        return self._test_data[self.predictors], self._test_data[self.target]
