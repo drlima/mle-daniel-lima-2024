@@ -16,8 +16,9 @@ class Model:
     _model_metrics: dict[str, float]
     _data: DataSet
 
-    def __init__(self, train_test: bool = False, load_model: bool = False):
-        self._data = DataSet()
+    def __init__(self, load_data: bool = True, train_test: bool = False, load_model: bool = False):
+        if load_data:
+            self._data = DataSet()
         if train_test:
             self.train()
             self.test()
