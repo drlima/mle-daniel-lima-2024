@@ -37,4 +37,4 @@ def train(training_data: pd.DataFrame) -> Pipeline:
     pipeline = Pipeline(steps)
 
     pipeline.fit(training_data[train_cols], training_data[target])
-    return pipeline
+    return pipeline, train_cols
