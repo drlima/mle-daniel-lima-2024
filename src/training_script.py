@@ -1,16 +1,14 @@
 import logging
 
-from dataset.download_dataset import DataSet
-from model.testing_model import test
-from model.training_model import train
+from model import Model
 
 logger = logging.getLogger(__name__)
 
 logger.debug("Loading and parsing the data")
-data = DataSet()
+model = Model()
 
 logger.debug("Starting model training")
-pipeline = train(training_data=data.train)
+pipeline = model.train()
 
 logger.debug("Evaluating the model")
-test(pipeline=pipeline, test_data=data.test)
+model.test()

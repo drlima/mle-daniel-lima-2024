@@ -50,7 +50,3 @@ show_error_codes = 'True'
 show_error_context = 'True'
 warn_redundant_casts = 'True'
 exclude = ['.venv/*', 'tests']
-
-[tool.bandit]
-exclude_dirs = [".venv", "api/tests"]
-skips= ["B403"]

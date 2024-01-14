@@ -1,5 +1,5 @@
 import logging
-import pickle  # nosec
+import pickle
 
 import pandas as pd
 from category_encoders import TargetEncoder

@@ -1,3 +1,4 @@
+import json
 import logging
 
 import numpy as np
@@ -15,17 +16,17 @@ logger = logging.getLogger(__name__)
 
 
 def print_metrics(predictions, target):
-    metrics = [
-        f"RMSE: {np.sqrt(mean_squared_error(predictions, target))}",
-        f"MAPE: {mean_absolute_percentage_error(predictions, target)}",
-        f"MAE : {mean_absolute_error(predictions, target)}",
-    ]
+    metrics = {
+        "RMSE": f"{np.sqrt(mean_squared_error(predictions, target)):,.4f}",
+        "MAPE": f"{mean_absolute_percentage_error(predictions, target):,.4f}",
+        "MAE": f"{mean_absolute_error(predictions, target):,.4f}",
+    }
 
-    for metric in metrics:
-        logger.debug(metric)
+    for metric, value in metrics.items():
+        logger.debug(f"{metric}: {value}")
 
-    with open(get_artifact_path() / "training_metrics.txt", "w") as f:
-        f.write("\n".join(metrics))
+    with open(get_artifact_path() / "training_metrics.json", "w") as f:
+        json.dump(metrics, f)
 
 
 def test(
