@@ -53,3 +53,4 @@ exclude = ['.venv/*', 'tests']
 
 [tool.bandit]
 exclude_dirs = [".venv", "api/tests"]
+skips= ["B403"]
