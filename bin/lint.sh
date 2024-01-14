@@ -26,10 +26,6 @@ PYTHON_VENV_PATH="$REPODIR/.venv"
 PYTHON_VENV_PATH="$(realpath --relative-to=. "$PYTHON_VENV_PATH")"
 readonly PYTHON_VENV_PATH
 
-BANDIT_CONFIG="./pyproject.toml"
-BANDIT_CONFIG="$(realpath --relative-to=. "$BANDIT_CONFIG")"
-readonly BANDIT_CONFIG
-
 MYPY_CONFIG="$REPODIR/pyproject.toml"
 MYPY_CONFIG="$(realpath --relative-to=. "$MYPY_CONFIG")"
 readonly MYPY_CONFIG
@@ -108,7 +104,6 @@ function define_check_linters() {
 }
 
 alias run_linter_autoflake='print_stderr AUTOFLAKE && execute python -m autoflake -r --in-place --remove-unused-variables $FILES && execute python -m autoflake -r --in-place --remove-all-unused-imports --exclude=__init__.py $FILES && echo All done! ✨ 🌯 ✨'
-alias run_linter_bandit='print_stderr BANDIT && execute python -m bandit -c "$BANDIT_CONFIG" -r $FILES && echo All done! ✨ 🧁 ✨'
 alias run_linter_black='print_stderr BLACK && execute python -m black $FILES'
 alias run_linter_flake8='print_stderr FLAKE8 && execute python -m flake8 $FILES && echo All done! ✨ 🍩 ✨'
 alias run_linter_isort='print_stderr ISORT && execute python -m isort $FILES && echo All done! ✨ 🍪 ✨'
