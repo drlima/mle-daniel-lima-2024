@@ -498,10 +498,6 @@ statsmodels==0.14.1
     #   -c requirements.txt
     #   -r requirements.txt
     #   category-encoders
-strenum==0.4.15
-    # via
-    #   -c requirements.txt
-    #   -r requirements.txt
 terminado==0.18.0
     # via
     #   jupyter-server

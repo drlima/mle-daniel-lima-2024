@@ -117,8 +117,6 @@ starlette==0.35.1
     # via fastapi
 statsmodels==0.14.1
     # via category-encoders
-strenum==0.4.15
-    # via -r requirements.in
 threadpoolctl==3.2.0
     # via scikit-learn
 typing-extensions==4.9.0
