@@ -4,7 +4,7 @@ FROM python:$IMAGE_TAG as base
 
 ARG PYTHONUSERBASE=/tmp/requirements
 
-RUN apt-get update && apt-get install -y libpq-dev libffi-dev libssl-dev libcurl4-openssl-dev gcc
+RUN apt-get update && apt-get install -y libffi-dev build-essential
 
 COPY ./requirements.txt /tmp/requirements.txt
 
@@ -19,12 +19,6 @@ ENV RELEASE ${RELEASE}
 COPY --from=base /tmp/requirements/ /usr/local/
 
 RUN useradd -M apiuser
-RUN apt-get update && apt-get install -y \
-    libpq5 \
-    libffi7 \
-    libssl1.1 \
-    libcurl4 \
-    &&  rm -rf /var/lib/apt/lists/*
 
 USER apiuser
 

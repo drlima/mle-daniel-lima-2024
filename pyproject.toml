@@ -20,28 +20,6 @@ py_version = 311
 profile = 'black'
 
 
-[tool.pytest.ini_options]
-junit_family = "xunit1"
-addopts = [
-    "--junitxml=build/report.xml",
-    "--verbose",
-    "--capture=sys",
-    "--cov=api",
-    "--cov-report=xml",
-    "--cov-report=term",
-]
-testpaths = "api/tests/"
-
-[tool.coverage.run]
-source = ["."]
-omit = [
-    "**/test*.py",
-    "**/tests/",
-    "**/tests/**",
-    "**/__init__.py",
-    ".venv/**",
-]
-
 [tool.mypy]
 follow_imports = 'skip'
 ignore_missing_imports = 'True'
@@ -49,4 +27,4 @@ pretty = 'True'
 show_error_codes = 'True'
 show_error_context = 'True'
 warn_redundant_casts = 'True'
-exclude = ['.venv/*', 'tests']
+exclude = ['.venv/*']

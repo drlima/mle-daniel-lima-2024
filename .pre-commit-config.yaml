@@ -1,13 +1,4 @@
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.3.0
-    hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
-        exclude: requirements*.txt
-      - id: check-yaml
-        args: [--allow-multiple-documents]
-
   - repo: https://github.com/asottile/pyupgrade
     rev: v2.37.3
     hooks:
@@ -17,7 +8,7 @@ repos:
   - repo: https://github.com/PyCQA/autoflake
     rev: v2.2.1
     hooks:
-    -   id: autoflake
+      - id: autoflake
         args: [--remove-all-unused-imports, --in-place]
 
   - repo: https://github.com/psf/black
@@ -41,14 +32,16 @@ repos:
       - id: isort
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: 'v1.8.0'
+    rev: "v1.8.0"
     hooks:
-    -   id: mypy
+      - id: mypy
 
   - repo: https://github.com/pre-commit/pre-commit-hooks # Some out-of-the-box hooks for pre-commit
     rev: "v4.3.0"
     hooks:
       - id: check-yaml # This hook checks yaml files for parseable syntax
+        args: [--allow-multiple-documents]
       - id: end-of-file-fixer # Ensures that a file is either empty, or ends with one newline
         exclude: requirements*.txt
       - id: trailing-whitespace # This hook trims trailing whitespace
+        exclude: requirements*.txt
