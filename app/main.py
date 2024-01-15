@@ -3,14 +3,15 @@ from fastapi.responses import RedirectResponse
 from fastapi.security import OAuth2PasswordBearer
 
 
+from .config import get_settings
 from .src.model import Model
 
-
+settings = get_settings()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 def token_verification(token: str = Depends(oauth2_scheme)):
-    if token != "fake_access_token":
+    if token != settings.ACCESS_TOKEN:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     return token
 
@@ -22,7 +23,7 @@ model = Model()
 @app.post("/token")
 async def generate_token():
     # In a real-world scenario,this would perform an actual authentication and generate a proper token
-    return {"access_token": "fake_access_token", "token_type": "bearer"}
+    return {"access_token": settings.ACCESS_TOKEN, "token_type": "bearer"}
 
 
 @app.get("/")
