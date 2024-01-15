@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 
-from src.model import Model
+from .src.model import Model
 
 app = FastAPI()
 model = Model()
@@ -24,7 +24,7 @@ async def train():
 
 
 @app.get("/test")
-async def test():
+async def test() -> dict[str, float]:
     model.test()
     return model.model_metrics
 

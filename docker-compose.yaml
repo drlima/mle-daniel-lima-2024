@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  model-api:
+    container_name: model-api
+    image: drl/model-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    command: "uvicorn app.main:app --host 0.0.0.0 --port 8000"
+
