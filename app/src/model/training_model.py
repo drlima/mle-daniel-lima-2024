@@ -7,11 +7,13 @@ from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.pipeline import Pipeline
 
+from app.config import get_settings
 from app.src.dataset import CATEGORICAL_PREDICTORS
-
 from .utils import get_artifact_path
 
 logger = logging.getLogger(__name__)
+
+MODEL_SETTINGS = get_settings()
 
 
 def train(training_data: tuple[pd.DataFrame, pd.DataFrame]) -> Pipeline:
@@ -32,10 +34,10 @@ def train(training_data: tuple[pd.DataFrame, pd.DataFrame]) -> Pipeline:
             "model",
             GradientBoostingRegressor(
                 **{
-                    "learning_rate": 0.01,
-                    "n_estimators": 300,
-                    "max_depth": 5,
-                    "loss": "absolute_error",
+                    "learning_rate": MODEL_SETTINGS.learning_rate,
+                    "n_estimators": MODEL_SETTINGS.n_estimators,
+                    "max_depth": MODEL_SETTINGS.max_depth,
+                    "loss": MODEL_SETTINGS.loss,
                 }
             ),
         ),
