@@ -7,7 +7,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.pipeline import Pipeline
 
-from dataset import Predictors
+from src.dataset import CATEGORICAL_PREDICTORS
 
 from .utils import get_artifact_path
 
@@ -22,7 +22,7 @@ def train(training_data: tuple[pd.DataFrame, pd.DataFrame]) -> Pipeline:
 
     preprocessor = ColumnTransformer(
         transformers=[
-            ("categorical", categorical_transformer, Predictors.categorical()),
+            ("categorical", categorical_transformer, [c.name for c in CATEGORICAL_PREDICTORS]),
         ],
     )
 

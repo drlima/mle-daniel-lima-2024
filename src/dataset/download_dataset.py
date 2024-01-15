@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from .models import Predictors, TargetColumn
+from .data_models import Schema, get_predictors_names, get_target_name
 
 logger = logging.getLogger(__name__)
 
@@ -29,8 +29,9 @@ class CSVDataSet:
 
 
 class DataSet:
-    predictors = [str(p) for p in Predictors]
-    target = [str(t) for t in TargetColumn]
+    predictors = get_predictors_names()
+    target = get_target_name()
+    schema = Schema()
     db_connector = CSVDataSet()
     _train_data: pd.DataFrame
     _test_data: pd.DataFrame
@@ -39,21 +40,14 @@ class DataSet:
         self._load_train()
         self._load_test()
 
-    @staticmethod
-    def _all_columns_in_df(columns: list[str], data_frame: pd.DataFrame) -> bool:
-        return all([col in data_frame.columns for col in columns])
-
-    def _valid_schema(self, data: pd.DataFrame | None) -> bool:
-        return self._all_columns_in_df(self.predictors, data) and self._all_columns_in_df(self.target, data)
-
     def _load_train(self):
         self._train_data = self.db_connector.load_data("train.csv")
-        if self._train_data is not None and not self._valid_schema(self._train_data):
+        if not self.schema.validate_schema(self._train_data):
             raise DataSchemaError("Missing columns in training dataset")
 
     def _load_test(self):
         self._test_data = self.db_connector.load_data("test.csv")
-        if self._test_data is not None and not self._valid_schema(self._test_data):
+        if not self.schema.validate_schema(self._test_data):
             raise DataSchemaError("Missing columns in test dataset")
 
     @property
