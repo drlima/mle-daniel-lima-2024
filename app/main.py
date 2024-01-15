@@ -24,7 +24,7 @@ async def train():
 
 
 @app.get("/test")
-async def test():
+async def test() -> dict[str, float]:
     model.test()
     return model.model_metrics
 

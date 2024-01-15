@@ -17,9 +17,9 @@ logger = logging.getLogger(__name__)
 
 def print_metrics(predictions, target):
     metrics = {
-        "RMSE": f"{np.sqrt(mean_squared_error(predictions, target)):,.4f}",
-        "MAPE": f"{mean_absolute_percentage_error(predictions, target):,.4f}",
-        "MAE": f"{mean_absolute_error(predictions, target):,.4f}",
+        "RMSE": np.sqrt(mean_squared_error(predictions, target)),
+        "MAPE": mean_absolute_percentage_error(predictions, target),
+        "MAE": mean_absolute_error(predictions, target),
     }
 
     for metric, value in metrics.items():

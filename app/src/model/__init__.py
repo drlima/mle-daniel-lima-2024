@@ -53,6 +53,8 @@ class Model:
 
     @property
     def model_metrics(self) -> dict[str, float]:
+        if not hasattr(self, "_model_metrics"):
+            self.load_metrics()
         return self._model_metrics
 
     def predict(
