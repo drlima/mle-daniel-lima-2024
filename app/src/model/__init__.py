@@ -4,7 +4,7 @@ import pickle
 import pandas as pd
 from sklearn.pipeline import Pipeline
 
-from src.dataset import DataSet
+from app.src.dataset import DataSet
 
 from .testing_model import test
 from .training_model import train

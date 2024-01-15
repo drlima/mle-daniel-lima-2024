@@ -14,7 +14,7 @@ class DataSchemaError(Exception):
 
 class CSVDataSet:
     def load_data(self, file_name: str) -> pd.DataFrame:
-        path = Path(__file__).parent.parent.parent / "data" / file_name
+        path = Path(__file__).parent.parent.parent.parent / "data" / file_name
         try:
             data = pd.read_csv(path)
         except FileNotFoundError:

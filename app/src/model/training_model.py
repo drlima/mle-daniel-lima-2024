@@ -7,7 +7,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.pipeline import Pipeline
 
-from src.dataset import CATEGORICAL_PREDICTORS
+from app.src.dataset import CATEGORICAL_PREDICTORS
 
 from .utils import get_artifact_path
 

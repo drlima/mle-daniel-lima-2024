@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 
-from src.model import Model
+from .src.model import Model
 
 app = FastAPI()
 model = Model()
